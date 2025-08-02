@@ -89,7 +89,32 @@ app.delete('/tugas/:No', (req, res) => {
     });
 });
 
-// 6. Menjalankan server
+// post/create pada tabel catatan
+app.post("/catatan", (req, res) => {
+    const { judul } = req.body;
+    const { note } = req.body;
+    const sql = "INSERT INTO catatan (judul, note) VALUES (?, ?)";
+
+    db.query(sql, [judul, note], (err, result) => {
+        if (err) {
+            return res.status(500).send(`Error POST to catatan: ${err}`);
+        };
+        res.status(201).json({ no: result.insertno, judul, note });
+    });
+});
+
+// get/read dari tabel catatan
+app.get('/catatan', (req, res) => {
+    const sql = "SELECT * FROM catatan ORDER BY tgl_buat DESC";
+    db.query(sql, (err, result) => {
+        if (err) {
+            return res.status(500).send(`Error GET to catatan: ${err}`);
+        };
+        res.json(`Succes to catatan: ${result}`);
+    });
+});
+
+// Menjalankan server
 app.listen(port, () => {
     console.log(`🚀 Server backend berjalan di http://localhost:${port}`);
 });
