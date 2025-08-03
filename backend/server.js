@@ -114,6 +114,18 @@ app.get('/catatan', (req, res) => {
     });
 });
 
+// Delete/hapus pada tabel catatan
+app.deletet('/catatan/:no', (req, res) => {
+    const { no } = req.params;
+    const sql = 'DELETE FROM catatan WHERE no = ?';
+    db.query(sql, [no], (err, result) => {
+        if (err) {
+            return res.status(500).send(`Error delete from catatan: ${err}`);
+        };
+        res.send('Catatan berhasil dihapus');
+    })
+})
+
 // Menjalankan server
 app.listen(port, () => {
     console.log(`🚀 Server backend berjalan di http://localhost:${port}`);
