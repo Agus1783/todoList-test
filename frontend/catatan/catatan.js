@@ -1,4 +1,3 @@
-const { read } = require("fs");
 
 // url backend
 const url = "http://localhost:3000/catatan";
@@ -19,7 +18,7 @@ async function creatNote() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ judul: judul }, {note: note})
+            body: JSON.stringify({ judul: judul, note: note })
         });
 
         if (response.ok) {
@@ -37,10 +36,11 @@ async function readNote() {
     try {
         const response = await fetch(url);
         const catatan = await response.json();
-
+        
+        const daftarObjekNote = Array.isArray(catatan) ? catatan : catatan.data || [];//membuat agar catatan bisa terbaca
         listNote.innerHTML = '';
 
-        catatan.forEach(catatan => {
+        daftarObjekNote.forEach(catatan => {
             const li = document.createElement('li');
             li.className = 'list-note-item';
             li.dataset.no = catatan.no;
@@ -59,3 +59,8 @@ async function readNote() {
 };
 
 // fungsi update & delete catatan
+
+
+// event listener
+noteBtn.addEventListener('click', creatNote);
+document.addEventListener('DOMContentLoaded', readNote);
