@@ -114,6 +114,19 @@ app.get('/catatan', (req, res) => {
     });
 });
 
+app.put('/catatan/:no', (req, res) => {
+    const { no } = req.params;
+    const { judul, note } = req.body;
+
+    const sql = "UPDATE catatan SET judul = ?, note = ? WHERE no = ?";
+    db.query(sql, [judul, note, no], (err, result) => {
+        if (err) {
+            return res.status(500).send(`Error update catatan: ${err}`);
+        }
+        res.send(`Catatan berhasil diupdate`);
+    })
+})
+
 // Delete/hapus pada tabel catatan
 app.delete('/catatan/:no', (req, res) => {
     const { no } = req.params;
