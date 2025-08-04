@@ -59,6 +59,26 @@ async function readNote() {
 };
 
 // fungsi update & delete catatan
+async function upDelNote(event) {
+    const targetNote = event.targetNote;
+    const itemNote = targetNote.closest('.list-note-item');
+    const idNote = itemNote.dataset.no;
+
+    if (targetNote.classList.contains('delete-btn')) {
+        try {
+            const response = await fetch(`${url}/${idNote}`, {
+                method: "DELETE",
+            });
+            if (response.ok) {
+                alert(`Catatan ${itemNote.dataset.judul} dihapus`);
+                readNote();
+            }
+        } catch (err) {
+            console.error(`Error menghapus note: ${err}`);
+        }
+    };
+
+}
 
 
 // event listener
