@@ -58,7 +58,11 @@ async function readNote() {
     };
 };
 
-// fungsi update & delete catatan
+// bagian untuk update dan delete note
+let editMode = false;
+let editId = null;
+
+// fungsi delete catatan
 async function upDelNote(event) {
     const targetNote = event.targetNote;
     const itemNote = targetNote.closest('.list-note-item');
@@ -78,9 +82,47 @@ async function upDelNote(event) {
         }
     };
 
+    if (targetNote.classList.contains('edit-btn')) {
+        inputJudul.value = itemNote.querySelector("h3").innerText;
+        inputNote.value = itemNote.querySelector("span").innerText;
+        noteBtn.textContent = "Update";
+        editMode = true;
+        editId = idNote;
+    }
+
+}
+
+// fungsi update catatan
+async function updateNote() {
+    try {
+        const response = await fetch(`${url}/${editId}`, {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ judul, note })
+        });
+        if (response.ok) {
+            inputJudul.value = '';
+            inputJudul.value = '';
+            noteBtn.textContent = '✅';
+            editMode = false;
+            editId = null;
+            readNote();
+        }
+    } catch (err) {
+        console.error(`Error edit note: ${err}`);
+    }
 }
 
 
 // event listener
-noteBtn.addEventListener('click', creatNote);
+noteBtn.addEventListener('click', function() {
+    if (editMode) {
+        updateNote();
+    } else {
+        creatNote();
+    }
+});
+listNote.addEventListener('click', upDelNote);
 document.addEventListener('DOMContentLoaded', readNote);
