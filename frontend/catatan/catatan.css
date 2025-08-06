@@ -1,10 +1,15 @@
+*, html, body {
+    /* margin: 20px; */
+    /* padding: 0; */
+    box-sizing: border-box;
+}
+
 body {
     font-family: Arial, Helvetica, sans-serif;
     background-color: aquamarine;
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
-    flex-grow: 1;
     flex-direction: column;
     height: 100vh;
     margin: 0;
@@ -24,7 +29,8 @@ header {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: max-content;
-    margin: 0 auto;
+    margin: 0;
+    overflow-y: auto; /* supaya list-note-item nya tidak menjorok keatas */
 }
 
 .input-area {
@@ -62,7 +68,46 @@ header {
 
 #list-note {
     list-style: none;
-    padding: 0 auto;
     margin: 0 auto;
+    background-color: blue;
 }
+
+.list-note-item {
+  display: flex;
+  flex-direction: row; 
+  align-items: flex-start;
+  padding: 0.75rem;
+  border-bottom: 1px solid #eee;
+  border: 1px solid red;
+  /* margin-right: 20px; */
+}
+
+.note-content h3 {
+  margin: 0 0 0.25rem 0; 
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.note-text {
+  margin: 0 0 0.5rem 0;
+  color: #333; 
+}
+
+.note-actions {
+  display: flex;
+  gap: 0.5rem; 
+}
+
+.note-actions button {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.note-actions button:hover {
+  transform: scale(1.2);
+  transition: transform 0.2s ease;
+}
+
 

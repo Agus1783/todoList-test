@@ -46,10 +46,15 @@ async function readNote() {
             li.dataset.no = catatan.no;
 
             li.innerHTML = `
+            <div class="note-content">
                 <h3>${catatan.judul}</h3>
-                <span>${catatan.note}</span>
+                <hr>
+                <p class="note-text">${catatan.note}</p>
+            </div>
+            <div class="tombol-updel">
                 <button class="edit-btn">✏️</button>
                 <button class="delete-btn">🗑️</button>
+            </div>
             `;
             listNote.appendChild(li);
         });
