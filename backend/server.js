@@ -110,7 +110,7 @@ app.get('/catatan', (req, res) => {
         if (err) {
             return res.status(500).send(`Error GET to catatan: ${err}`);
         };
-        res.json(`Succes to catatan: ${result}`);
+        res.json(result);
     });
 });
 
