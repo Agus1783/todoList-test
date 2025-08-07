@@ -52,7 +52,7 @@ async function readNote() {
                 <p class="note-text">${catatan.note}</p>
             </div>
             <div class="tombol-updel">
-                <button class="edit-btn">✏️</button>
+                <button class="edit-btn onclick="">✏️</button>
                 <button class="delete-btn">🗑️</button>
             </div>
             `;
@@ -69,9 +69,10 @@ let editId = null;
 
 // fungsi delete catatan
 async function upDelNote(event) {
-    const targetNote = event.targetNote;
+    const targetNote = event.target;
     const itemNote = targetNote.closest('.list-note-item');
     const idNote = itemNote.dataset.no;
+    const judul = itemNote.querySelector('h3').innerText;
 
     if (targetNote.classList.contains('delete-btn')) {
         try {
@@ -79,7 +80,7 @@ async function upDelNote(event) {
                 method: "DELETE",
             });
             if (response.ok) {
-                alert(`Catatan ${itemNote.dataset.judul} dihapus`);
+                alert(`Catatan dengan judul '${judul}' dihapus`);
                 readNote();
             }
         } catch (err) {
@@ -89,7 +90,7 @@ async function upDelNote(event) {
 
     if (targetNote.classList.contains('edit-btn')) {
         inputJudul.value = itemNote.querySelector("h3").innerText;
-        inputNote.value = itemNote.querySelector("span").innerText;
+        inputNote.value = itemNote.querySelector("p").innerText;
         noteBtn.textContent = "Update";
         editMode = true;
         editId = idNote;
@@ -99,6 +100,14 @@ async function upDelNote(event) {
 
 // fungsi update catatan
 async function updateNote() {
+    const judul = inputJudul.value.trim();
+    const note = inputNote.value.trim();
+
+    // if (!judul || !note) {
+    //     alert("Judul dan isi catatan tidak boleh kosong.");
+    //     return;
+    // }
+
     try {
         const response = await fetch(`${url}/${editId}`, {
             method: "PUT",
@@ -107,13 +116,16 @@ async function updateNote() {
             },
             body: JSON.stringify({ judul, note })
         });
+
         if (response.ok) {
             inputJudul.value = '';
-            inputJudul.value = '';
+            inputNote.value = '';
             noteBtn.textContent = '✅';
             editMode = false;
             editId = null;
             readNote();
+        } else {
+            console.error("Update gagal:", await response.text());
         }
     } catch (err) {
         console.error(`Error edit note: ${err}`);
@@ -121,8 +133,10 @@ async function updateNote() {
 }
 
 
+
 // event listener
-noteBtn.addEventListener('click', function() {
+noteBtn.addEventListener('click', (e) => {
+    e.preventDefault();
     if (editMode) {
         updateNote();
     } else {
